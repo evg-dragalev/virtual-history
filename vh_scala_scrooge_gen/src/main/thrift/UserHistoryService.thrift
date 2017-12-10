@@ -1,6 +1,6 @@
 namespace java com.virtualhistory.services
 include "types.thrift"
-typedef  i32 int;
+
 /**
 * Service to manipulate with user saved items
 **/
@@ -47,7 +47,7 @@ service UserHistoryService {
 
 	list<types.Quest> listPassedPaginated(
             1: string userId,
-            2: int page,
+            2: i32 page,
     		3: string authToken
     	) throws (
     	)
