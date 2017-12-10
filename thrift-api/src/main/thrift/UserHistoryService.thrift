@@ -47,7 +47,7 @@ service UserHistoryService {
 
 	list<types.Quest> listPassedPaginated(
             1: string userId,
-            2: int32 page,
+            2: i32 page,
     		3: string authToken
     	) throws (
     	)

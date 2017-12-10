@@ -4,7 +4,7 @@ include "types.thrift"
 /**
 * Service to provide quests feeds
 **/
-service QuestService {
+service QuestFeedService {
     /**
     *
     * Return quest info by its id 
@@ -54,9 +54,9 @@ service QuestService {
     * @param authToken user authentication token
     * @return list of quests near point on the map 
     **/
-    list<Quest> getQuestsByLocation(
+    list<types.Quest> getQuestsByLocation(
             1: list<types.Location> location;
-            2: string: authToken
+            2: string authToken
         ) throws (
         )
 }
