@@ -9,20 +9,23 @@ include "types.thrift"
 
 service ModelsDeliveryService{
 
-	types.Model getModelForQuest(
-	    1:
+    types.Model getModelById(
+        1: string authToken
+        2: string modelId
+    ) throws(
+
+    )
+
+	list<types.Model> getModelsForQuest(
+	    1: string authToken
+	    2: string questId
 	) throws(
 
 	)
 
-	types.Model getModelForStage(
-	    1:
-	) throws(
-
-	)
-
-	types.Model updateModel(
-	    1:
+	list<types.Model> getModelForStage(
+	    1: string authToken
+	    2: string stageId
 	) throws(
 
 	)
