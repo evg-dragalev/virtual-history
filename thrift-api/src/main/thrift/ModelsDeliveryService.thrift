@@ -16,15 +16,15 @@ service ModelsDeliveryService{
 
     )
 
-	list<types.Model> getModelsForQuest(
+    list<types.Model> getModelsForQuest(
 	    1: string authToken
 	    2: string questId
 	) throws(
 
 	)
 
-	list<types.Model> getModelForStage(
-	    1: string authToken
+    list<types.Model> getModelForStage(
+            1: string authToken
 	    2: string stageId
 	) throws(
 
