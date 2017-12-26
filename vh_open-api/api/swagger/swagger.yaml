@@ -14,10 +14,11 @@
   # format of bodies a client can send (Content-Type)
   consumes:
     - application/json
-  # format of the responses to the client (Accepts)
+  # format of the responses to the client (Acacepts)
   produces:
     - application/json
   paths:
+
     /squares:
       # realisation of methods connected qwith url products situated in controller #get_products (products Service)
       x-swagger-router-controller: squaresController
@@ -30,6 +31,7 @@
           - $ref: '#/parameters/zoom'
           - $ref: '#/parameters/latitude'
           - $ref: '#/parameters/longitude'
+          - $ref: '#/parameters/authToken'
         responses:
           200:
             description: Success

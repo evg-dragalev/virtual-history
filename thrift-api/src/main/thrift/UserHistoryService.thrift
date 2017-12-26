@@ -1,6 +1,6 @@
 namespace java com.virtualhistory.services
 include "types.thrift"
-typedef  i32 int;
+
 /**
 * Service to manipulate with user saved items
 **/
@@ -27,7 +27,7 @@ service UserHistoryService {
     * @param questId an id of the quest to be removed from history
     * @param userId id of the user who what to unsave the item
     * @param authToken user authentication token
-    * @return id of the quest 
+    * @return id of the quest
     **/
 	string unPass(
 			1: string questId,
@@ -45,9 +45,9 @@ service UserHistoryService {
     * @return list of quests passed by user for the given page
     **/
 
-	list<types.Quest> listPassedPaginated(
+	list<Types.thrift.Quest> listPassedPaginated(
             1: string userId,
-            2: int page,
+            2: i32 page,
     		3: string authToken
     	) throws (
     	)

@@ -4,11 +4,11 @@ include "types.thrift"
 
 service SightsService {
 
-    types.MapSight getSightById(
+    Types.thrift.MapSight getSightById(
             1: string sightId,
         ) throws (
         )
-list<types.MapSight> getSights(
+list<Types.thrift.MapSight> getSights(
             1: string sightIds,
               2: string page,
               3: string authToken

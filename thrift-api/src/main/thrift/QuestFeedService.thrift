@@ -12,7 +12,7 @@ service QuestService {
     * @param questId
     * @return quest 
     **/
-    types.Quest getQuestById(
+    Types.thrift.Quest getQuestById(
             1: string questId,
         ) throws (
         )
@@ -24,7 +24,7 @@ service QuestService {
     * @param authToken user authentication token
     * @return list of quests
     **/
-	list<types.Quest> quests(
+	list<Types.thrift.Quest> quests(
 			1: list<string> questIds,
 			2: string authToken
 		) throws (
@@ -39,7 +39,7 @@ service QuestService {
     * @param authToken user authentication token
     * @return list of quests
     **/
-	list<types.Quest> questsPaginated(
+	list<Types.thrift.Quest> questsPaginated(
 			1: list<string> questIds,
 			2: i32 page,
 		    3: string authToken
@@ -54,8 +54,8 @@ service QuestService {
     * @param authToken user authentication token
     * @return list of quests near point on the map 
     **/
-    list<types.Quest> getQuestsByLocation(
-            1: list<types.Location> location;
+    list<Types.thrift.Quest> getQuestsByLocation(
+            1: list<Types.thrift.Location> location;
             2: string authToken;
         ) throws (
         )
