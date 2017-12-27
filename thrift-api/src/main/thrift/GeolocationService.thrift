@@ -5,11 +5,15 @@ service GeolocationService{
                     1: Types.Location squareCoordinate;
                     2: i32 zoom;
                     3: string authToken;
-                )
+    )
                  throws (
 
                 )
+    Types.Square getSquareById()(
+                    1: string questId
+    )
+                 throws (
 
-
+                          )
 
 }

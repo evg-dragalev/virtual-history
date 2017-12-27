@@ -1,250 +1,788 @@
-  swagger: "2.0"
-  info:
-    version: "0.0.1"
-    title: Sample Api
-  # during dev, should point to your local machine
-  host: localhost:10010
-  # basePath prefixes all resource paths
-  basePath: /api/v1
-  #
-  schemes:
-    # tip: remove http to make production-grade
-    - http
-    - https
-  # format of bodies a client can send (Content-Type)
-  consumes:
-    - application/json
-  # format of the responses to the client (Acacepts)
-  produces:
-    - application/json
-  paths:
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Sample Api 1.0
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths
+basePath: /api/v1
+#
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /squares:
+    # realisation of methods connected qwith url products situated in controller #get_products (products Service)
+    x-swagger-router-controller: squaresController
+    get:
+      #name of method (getProducts in controller get_products)
+      summary: Get Squares
+      operationId: getSquares
+      description: "Provide array of squares id"
+      parameters:
+        - $ref: '#/parameters/zoom'
+        - $ref: '#/parameters/latitude'
+        - $ref: '#/parameters/longitude'
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/squareId"
+        500:
+          $ref: '#/responses/Standard500ErrorResponse'
 
-    /squares:
-      # realisation of methods connected qwith url products situated in controller #get_products (products Service)
-      x-swagger-router-controller: squaresController
-      get:
-        #name of method (getProducts in controller get_products)
-        summary: Get Squares
-        operationId: getSquares
-        description: "Provide array of squares id"
-        parameters:
-          - $ref: '#/parameters/zoom'
-          - $ref: '#/parameters/latitude'
-          - $ref: '#/parameters/longitude'
-          - $ref: '#/parameters/authToken'
-        responses:
-          200:
-            description: Success
-            schema:
-              type: array
-              items:
-                $ref: "#/definitions/squareId"
-          500:
-            $ref: '#/responses/Standard500ErrorResponse'
-  
-  
-    /squares/{squareId}:
-      x-swagger-router-controller: mapSightsController
-      get:
-        summary: Gets array of objects sights
-        description: array of sights in current square
-        operationId: getMapSights
-        parameters:
-          - $ref: '#/parameters/squareId'
-        responses:
-          200:
-            description: array of sights in current square
-            schema:
-              $ref: '#/definitions/mapSights'
-          404:
-            description: The Sight does not exist
-    /sights:
+
+  /squares/{squareId}:
+    x-swagger-router-controller: squaresController
+    get:
+      summary: Gets array of objects sights
+      description: array of sights in current square
+      operationId: getMapSights
+      parameters:
+        - $ref: '#/parameters/squareId'
+      responses:
+        200:
+          description: array of sights in current square
+          schema:
+            $ref: '#/definitions/mapSights'
+        404:
+          description: The Sight does not exist
+  /sights:
+      #controller getProducts
+    x-swagger-router-controller: mediaSightsController
+    get:
+      summary: Gets array of sorted sights
+      description: array of sorted sights by poopularity
+      operationId: getMediaSights
+      parameters:
+        - $ref: '#/parameters/sightIds'
+        - $ref: '#/parameters/page'
+        - $ref: '#/parameters/authToken'
+      # - name: sightsIds
+      #   in: query
+      #   description: " sights ids"
+      #   required: false
+      #   schema:
+      #     type: array
+      #     items:
+      #         sightId:
+      #         #name: sightId
+      #         #in: query
+      #         description: the sight id
+      #       # required: false
+      #         type: string
+      #   collectionFormat: "multi"
+      responses:
+        200:
+          description: array
+          schema:
+            $ref: '#/definitions/mediaSights'
+        404:
+          description: The Sight does not exist
+  /sights/{sightId}:
+    x-swagger-router-controller: mediaSightsController
+    get:
+      summary: Gets array of objects sights
+      description: array of sights in current square
+      operationId: getMediaSightDescription
+      parameters:
+        - $ref: '#/parameters/sightId'
+        - $ref: '#/parameters/authToken'
+      responses:
+        200:
+          description: full description of sight
+          schema:
+            $ref: '#/definitions/sightDescription'
+        404:
+          description: The Sight does not exist
+  /modelsForQuest:
         #controller getProducts
       x-swagger-router-controller: mediaSightsController
       get:
         summary: Gets array of sorted sights
         description: array of sorted sights by poopularity
-        operationId: getMediaSights
+        operationId: getModels
         parameters:
-          - $ref: '#/parameters/sightIds'
-          - $ref: '#/parameters/page'
+          - $ref: '#/parameters/questId'
           - $ref: '#/parameters/authToken'
-        # - name: sightsIds
-        #   in: query
-        #   description: " sights ids"
-        #   required: false
-        #   schema:
-        #     type: array
-        #     items:
-        #         sightId:
-        #         #name: sightId
-        #         #in: query
-        #         description: the sight id
-        #       # required: false
-        #         type: string
-        #   collectionFormat: "multi"
         responses:
           200:
             description: array
             schema:
-              $ref: '#/definitions/mediaSights'
+              $ref: '#/definitions/models'
           404:
             description: The Sight does not exist
-    /sights/{sightId}:
+  /models/{modelId}:
       x-swagger-router-controller: mediaSightsController
       get:
         summary: Gets array of objects sights
         description: array of sights in current square
-        operationId: getMediaSightDescription
+        operationId: getDefeniteModel
         parameters:
-          - $ref: '#/parameters/sightId'
+          - $ref: '#/parameters/modelId'
           - $ref: '#/parameters/authToken'
         responses:
           200:
             description: full description of sight
             schema:
-              $ref: '#/definitions/sightDescription'
+              $ref: '#/definitions/model'
           404:
-            description: The Sight does not exist
-    /swagger:
-      x-swagger-pipe: swagger_raw
-  definitions:
-    squareId:
-      type: string
-      description: squareId
-    mapSight:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique id of a sight.
-        name:
-          type: string
-          description: Full name of sight.
-        photo:
-          type: string
-          description: Link to image sights.
-  #      location:
-  #        type: object
-  #        description: Longitude and Latitude
-  #        properties:
-        latitude:
-          type: number
-          format: double
-          description: Latitude number
-        longitude:
-          type: number
-          format: double
-          description: Longitude number
-    mapSights:
-      type: array
-      items:
-        $ref: '#/definitions/mapSight'
-    mediaSight:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique id of a sight.
-        name:
-          type: string
-          description: Full name of sight.
-        photo:
-          type: string
-          description: Link to image sights.
-        popularity:
-          type: number
-          format: integer
-          description: popularity number
-    mediaSights:
-      type: array
-      items:
-        $ref: '#/definitions/mediaSight'
-        
-    sightDescription:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique id of a sight.
-        description:
-          type: string
-          description: description
-    Error:
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-  responses:
-    Standard500ErrorResponse:
-      description: An unexpected error occured.
-      schema:
-        $ref: '#/definitions/Error'
-  
-  
-  parameters:
-    sightId:
-      name: sightId
-      in: path
-      description: sightId
+            description: The Sight does not exist    
+  /quest:
+    post:
+      tags:
+      - "quest"
+      summary: "Add a new quest to the user"
+      description: ""
+      operationId: "addQuest"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Quest object that needs to be added to the user"
+        required: true
+        schema:
+          $ref: "#/definitions/Quest"
+      responses:
+        405:
+          description: "Invalid input"
+    put:
+      tags:
+      - "quest"
+      summary: "Update an existing quest"
+      description: ""
+      operationId: "updateQuest"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Add quest to user"
+        required: true
+        schema:
+          $ref: "#/definitions/Quest"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Quest not found"
+        405:
+          description: "Validation exception"
+  /quest/findByStatus:
+    get:
+      tags:
+      - "quest"
+      summary: "Finds Quests by status"
+      description: "Multiple status values can be provided with comma separated strings"
+      operationId: "findQuestsByStatus"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "status"
+        in: "query"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "available"
+          - "pending"
+          - "sold"
+          default: "available"
+        collectionFormat: "multi"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Quest"
+        400:
+          description: "Invalid status value"
+  /quest/{questId}:
+    get:
+      tags:
+      - "quest"
+      summary: "Find quest by ID"
+      description: "Returns a single quest"
+      operationId: "getQuestById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "questId"
+        in: "path"
+        description: "ID of quest to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Quest"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Quest not found"
+    post:
+      tags:
+      - "quest"
+      summary: "Updates a quest in the user with form data"
+      description: ""
+      operationId: "updateQuestWithForm"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "questId"
+        in: "path"
+        description: "ID of quest that needs to be updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "name"
+        in: "formData"
+        description: "Updated name of the quest"
+        required: false
+        type: "string"
+      - name: "status"
+        in: "formData"
+        description: "Updated status of the quest"
+        required: false
+        type: "string"
+      responses:
+        405:
+          description: "Invalid input"
+    delete:
+      tags:
+      - "quest"
+      summary: "Deletes a quest"
+      description: ""
+      operationId: "deleteQuest"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "api_key"
+        in: "header"
+        required: false
+        type: "string"
+      - name: "questId"
+        in: "path"
+        description: "Quest id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Quest not found"
+  /quest/{questId}/uploadImage:
+    post:
+      tags:
+      - "quest"
+      summary: "uploads an image"
+      description: ""
+      operationId: "uploadFile"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "questId"
+        in: "path"
+        description: "ID of quest to update"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "additionalMetadata"
+        in: "formData"
+        description: "Additional data to pass to server"
+        required: false
+        type: "string"
+      - name: "file"
+        in: "formData"
+        description: "file to upload"
+        required: false
+        type: "file"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /user:
+    post:
+      tags:
+      - "user"
+      summary: "Create user"
+      description: "This can only be done by the logged in user."
+      operationId: "createUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+  /user/createWithArray:
+    post:
+      tags:
+      - "user"
+      summary: "Creates list of users with given input array"
+      description: ""
+      operationId: "createUsersWithArrayInput"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of user object"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+  /user/createWithList:
+    post:
+      tags:
+      - "user"
+      summary: "Creates list of users with given input array"
+      description: ""
+      operationId: "createUsersWithListInput"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of user object"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+  /user/login:
+    get:
+      tags:
+      - "user"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "loginUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "string"
+          headers:
+            X-Rate-Limit:
+              type: "integer"
+              format: "int32"
+              description: "calls per hour allowed by the user"
+            X-Expires-After:
+              type: "string"
+              format: "date-time"
+              description: "date in UTC when token expires"
+        400:
+          description: "Invalid username/password supplied"
+  /user/logout:
+    get:
+      tags:
+      - "user"
+      summary: "Logs out current logged in user session"
+      description: ""
+      operationId: "logoutUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters: []
+      responses:
+        default:
+          description: "successful operation"
+  /user/{username}:
+    get:
+      tags:
+      - "user"
+      summary: "Get user by user name"
+      description: ""
+      operationId: "getUserByName"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "The name that needs to be fetched. Use user1 for testing. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+    put:
+      tags:
+      - "user"
+      summary: "Updated user"
+      description: "This can only be done by the logged in user."
+      operationId: "updateUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "name that need to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        400:
+          description: "Invalid user supplied"
+        404:
+          description: "User not found"
+    delete:
+      tags:
+      - "user"
+      summary: "Delete user"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "The name that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+definitions:
+  squareId:
+    type: string
+    description: squareId
+  mapSight:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique id of a sight.
+      name:
+        type: string
+        description: Full name of sight.
+      photo:
+        type: string
+        description: Link to image sights.
+#      location:
+#        type: object
+#        description: Longitude and Latitude
+#        properties:
+      latitude:
+        type: number
+        format: double
+        description: Latitude number
+      longitude:
+        type: number
+        format: double
+        description: Longitude number
+  model:
+   type: object
+   properties:
+      id:
+        type: string
+        description: unique id of model
+      name:
+        type: string
+        description: Full name of model.
+      path:
+        type: string
+        description: path to model.
+  models:
+    type: array
+    items:
+      $ref: '#/definitions/model'
+  mapSights:
+    type: array
+    items:
+      $ref: '#/definitions/mapSight'
+  mediaSight:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique id of a sight.
+      name:
+        type: string
+        description: Full name of sight.
+      photo:
+        type: string
+        description: Link to image sights.
+      popularity:
+        type: number
+        format: integer
+        description: popularity number
+      latitude:
+        type: number
+        format: double
+        description: Latitude number
+      longitude:
+        type: number
+        format: double
+        description: Longitude number
+  mediaSights:
+    type: array
+    items:
+      $ref: '#/definitions/mediaSight'
+
+  sightDescription:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique id of a sight.
+      description:
+        type: string
+        description: description
+  Error:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+  Category:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Category"
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      phone:
+        type: "string"
+      userStatus:
+        type: "integer"
+        format: "int32"
+        description: "User Status"
+    xml:
+      name: "User"
+  Tag:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Tag"
+  Quest:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      category:
+        $ref: "#/definitions/Category"
+      name:
+        type: "string"
+        example: "doggie"
+      photoUrls:
+        type: "array"
+        xml:
+          name: "photoUrl"
+          wrapped: true
+        items:
+          type: "string"
+      tags:
+        type: "array"
+        xml:
+          name: "tag"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Tag"
+      status:
+        type: "string"
+        description: "quest status"
+        enum:
+        - "available"
+        - "pending"
+        - "sold"
+    xml:
+      name: "Quest"
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+responses:
+  Standard500ErrorResponse:
+    description: An unexpected error occured.
+    schema:
+      $ref: '#/definitions/Error'
+
+
+parameters:
+  questId:
+      name: questId
+      in: query
       required: true
       type: string
-    sightIds:
-      name: sightIds
-      in: query
-      description: string of sightsids
-      required: false
+  modelId:
+      name: modelId
+      in: path
+      description: modelId
+      required: true
       type: string
-    page:
-      name: page
-      in: query
-      description: page number
-      required: false
+  sightId:
+    name: sightId
+    in: path
+    description: sightId
+    required: true
+    type: string
+  sightIds:
+    name: sightIds
+    in: query
+    description: string of sightsids
+    required: false
+    type: string
+  page:
+    name: page
+    in: query
+    description: page number
+    required: false
+    type: string
+  authToken:
+    name: authToken
+    in: query
+    description: auth token
+    required: false
+    type: string
+  # sightIds:
+  #   type: array
+  #   items:
+  #     $ref: '#/parameters/sightId'
+  zoom:
+    name: zoom
+    in: query
+    description: The value that determines the scale of approximation.
+    required: false
+    type: number
+    format: integer
+  latitude:
+    name: latitude
+    in: query
+    description: "Coordinate determining the position of the point on the surface of the
+    Earth relative to the equator in degrees."
+    required: false
+    type: number
+    format: double
+  longitude:
+    name: longitude
+    in: query
+    description: "Coordinate determining the position of the point on the surface of the
+    Earth relative to the zero meridian in degrees."
+    required: false
+    type: number
+    format: double
+  squareId:
+      name: squareId
+      in: path
+      description: Unique id of the sight.
+      required: true
       type: string
-    authToken:
-      name: authToken
-      in: query
-      description: auth token
-      required: false
-      type: string
-    # sightIds:
-    #   type: array
-    #   items:
-    #     $ref: '#/parameters/sightId'
-    zoom:
-      name: zoom
-      in: query
-      description: The value that determines the scale of approximation.
-      required: false
-      type: number
-      format: integer
-    latitude:
-      name: latitude
-      in: query
-      description: "Coordinate determining the position of the point on the surface of the
-      Earth relative to the equator in degrees."
-      required: false
-      type: number
-      format: double
-    longitude:
-      name: longitude
-      in: query
-      description: "Coordinate determining the position of the point on the surface of the
-      Earth relative to the zero meridian in degrees."
-      required: false
-      type: number
-      format: double
-    squareId:
-        name: squareId
-        in: path
-        description: Unique id of the sight.
-        required: true
-        type: string
-  
-  
-  
-  
+
+
+
+
