@@ -4,13 +4,14 @@ include "types.thrift"
 service UserLifecycleService{
       string MahoutPreferenceAnalysis(
         1: list<User>  UserData;
-        2: list<UserPreference> UserPreferenceData
+        2: list<UserPreference> UserPreferenceData;
         )throws (
          		)
        string SocialMediaAnalysis(
-       1: list<Messages> socciaMedia
-       2: list<Prioritets> SocialPrioritets
-       )
+       1: list<Messages> socialMedia;
+       2: list<SocialMediaPrioritets> SocialPrioritets;
+       )throws (
+                )
 
 
 }

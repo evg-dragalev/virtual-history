@@ -45,7 +45,7 @@ service UserHistoryService {
     * @return list of quests passed by user for the given page
     **/
 
-	list<Types.thrift.Quest> listPassedPaginated(
+	list<Types.Quest> listPassedPaginated(
             1: string userId,
             2: i32 page,
     		3: string authToken
