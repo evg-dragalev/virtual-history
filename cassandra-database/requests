@@ -1,0 +1,26 @@
+1. SELECT * 
+    FROM sights
+      WHERE geolocation = "Independ. Sq."; //либо сдесь будет геолокация, которая соответстувет точке, выбранной пользователем
+  
+  
+  
+2.Пример, если пользователь хочет получить информацию о всех достопримечательностях, которые нахотядся в выбранном радиусе
+
+if(geolocation is contained in a given radius)
+SELECT *
+  FROM sights
+    WHERE geolocation IN ("Independ. Sq.", "Freedom Sq.");
+    
+    или если в появившемся списке достопримечательностей пользователь кликает на что-то определенное
+    
+    SELECT *
+      FROM sight
+        WHERE sight_id = "1";
+  
+  
+  
+3.Пример, если пользователь хочет выбрать достопримечательности опеределенного типа в некоторой геолокации
+
+SELECT *
+  FROM sights
+    WHERE sight_type = "sculpture" AND geolocation = "Independ. Sq.";
